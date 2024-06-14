@@ -1,5 +1,5 @@
 <?php
-require_once('database.php');
+
 class User {
 
     public $username;
@@ -10,9 +10,9 @@ class User {
 
     }
 
-    public function get_all_users() {
+    public function test () {
       $db = db_connect();
-      $statement = $db->prepare("SELECT * from users;");
+      $statement = $db->prepare("select * from users;");
       $statement->execute();
       $rows = $statement->fetch(PDO::FETCH_ASSOC);
       return $rows;
@@ -21,26 +21,25 @@ class User {
         $db = db_connect();
         $statement = $db->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $statement->bindValue(':username', $username);
-        $statement->bindValue(':password', $hashed_password);
+        $statement->bindParam(':username', $username);
+        $statement->bindParam(':password', $hashed_password);
         return $statement->execute();
     }
 
     public function user_exists($username) {
         $db = db_connect();
         $statement = $db->prepare("SELECT * FROM users WHERE username = :username");
-        $statement->bindValue(':username', $username);
+        $statement->bindParam(':username', $username);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC) ? true : false;
     }
+
+
     public function authenticate($username, $password) {
-        /*
-         * if username and password good then
-         * $this->auth = true;
-         */
+
     $username = strtolower($username);
     $db = db_connect();
-        $statement = $db->prepare("SELECT * from users WHERE username = :name;");
+        $statement = $db->prepare("select * from users WHERE username = :username;");
         $statement->bindValue(':name', $username);
         $statement->execute();
         $rows = $statement->fetch(PDO::FETCH_ASSOC);
@@ -61,5 +60,18 @@ class User {
       die;
     }
     }
-
+  public function logAttempt($username, $status) {
+      $sql = "INSERT INTO login_attempts (username, status, attempt_time) VALUES (:username, :status, :attempt_time)";
+      $stmt = $this->database->prepare($sql);
+      $stmt->bindParam(':username', $username);
+      $stmt->bindParam(':status', $status);
+      $stmt->bindParam(':attempt_time', date('Y-m-d H:i:s'));
+      $stmt->execute();
+  }
+  public function getRecentAttempts($username)
+  {
+      $this->db->query('SELECT * FROM log WHERE username = :username ORDER BY attempt_time DESC LIMIT 3');
+      $this->db->bind(':username', $username);
+      return $this->db->resultSet();
+  }
 }
