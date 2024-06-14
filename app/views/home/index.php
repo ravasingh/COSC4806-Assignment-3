@@ -3,7 +3,8 @@
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12">
-                <h1>Hey</h1>
+                <h1>Hey Welcome!</h1>
+                <p class="lead">This is a simple homepage.</p>
                 <p class="lead"> <?= date("F jS, Y"); ?></p>
             </div>
         </div>
