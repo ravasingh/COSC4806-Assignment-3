@@ -1,7 +1,7 @@
 <footer class="footer">    
     <div class="row">
         <div class="col-lg-12">
-            <p>Don't have an account? <a href="register.php">Register here</a></p>
+            <p>Don't have an account? <a href="app/controllers/register.php">Register here</a></p>
             <p>Copyright &copy; <?php echo date('Y'); ?> </p>
         </div>
     </div>

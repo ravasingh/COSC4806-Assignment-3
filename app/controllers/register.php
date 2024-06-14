@@ -1,4 +1,8 @@
 <?php
+
+require_once 'app/core/Controller.php';
+ini_set('include_path', get_include_path() . PATH_SEPARATOR . '/nix/store/nkirvcfs7fcasg5p6z1aaylcl3pska44-php-8.2.19/lib/php');
+
 class Register extends Controller
 {
     public function index()
